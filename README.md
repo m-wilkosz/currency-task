@@ -1,5 +1,7 @@
 # Currency task
 [![](https://skills.thijs.gg/icons?i=py,django,sqlite)](https://skills.thijs.gg)
+
+### Description
 Task for job recruitment. Application has two endpoints:
 - GET /currency/
   - fetch a list of all currencies already present in the local application database
