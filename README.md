@@ -53,6 +53,6 @@ python manage.py runserver
 ```
 Finally, run the Celery worker and beat in separate terminal windows
 ```
-celery -A your_project_name worker -l info
-celery -A your_project_name beat -l info
+celery -A currencytask worker -l info
+celery -A currencytask beat -l info
 ```
