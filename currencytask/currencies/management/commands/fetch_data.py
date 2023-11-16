@@ -15,17 +15,17 @@ class Command(BaseCommand):
     currency_pairs = ['EURUSD=X', 'GBPUSD=X', 'USDJPY=X', 'PLNUSD=X', 'EURCHF=X', 'SGD=X', 'EURJPY=X']
 
     # method to fetch data for a given interval
-    def fetch_data(self, interval, retry=0):
+    def fetch_data(self, interval, retry=0, initial=False):
         self.stdout.write(f'fetching data for interval: {interval}...')
 
         # determine the time range for data fetching
         end_time = timezone.now()
         if interval == '1m':
-            start_time = end_time - timedelta(hours=24)
+            start_time = end_time - timedelta(hours=24) if initial else end_time - timedelta(minutes=30)
         elif interval == '1h':
-            start_time = end_time - timedelta(days=7)
+            start_time = end_time - timedelta(days=7) if initial else end_time - timedelta(hours=2)
         elif interval == '1d':
-            start_time = end_time - timedelta(days=365)
+            start_time = end_time - timedelta(days=365) if initial else end_time - timedelta(days=2)
         else:
             raise ValueError(f'unsupported interval: {interval}')
 
@@ -86,7 +86,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         # fetch and process data for different intervals
         for interval in ['1m', '1h', '1d']:
-            self.fetch_data(interval)
+            self.fetch_data(interval, initial=True)
 
         # create currencies if they don't exist yet
         currencies_to_add = ['USD', 'EUR', 'GBP', 'JPY', 'SGD', 'CHF', 'PLN']
