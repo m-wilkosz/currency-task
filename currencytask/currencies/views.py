@@ -10,10 +10,10 @@ def currency_list(request):
     if filter_code:
         currencies = currencies.filter(code__icontains=filter_code)
 
-    if sort_by in ['code']:
-        currencies = currencies.order_by(sort_by)
-    else:
+    if sort_by == 'code':
         currencies = currencies.order_by('code')
+    else:
+        currencies = currencies.order_by('-code')
 
     data = [{"code": currency.code} for currency in currencies]
 
