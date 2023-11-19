@@ -7,9 +7,13 @@ class ExchangeRateAdmin(admin.ModelAdmin):
     search_fields = ['currency_pair', 'exchange_rate']
     list_filter = [
         ('date', DateTimeRangeFilterBuilder(title="Date",)),
-        'currency_pair',
+        'first_currency_code',
+        'second_currency_code',
         'interval'
     ]
+
+    def currency_pair(self, obj):
+        return obj.first_currency_code.code + obj.second_currency_code.code
 
     def formatted_date(self, obj):
         return obj.date.strftime("%b. %d, %Y %H:%M:%S")

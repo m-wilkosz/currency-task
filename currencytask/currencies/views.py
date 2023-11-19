@@ -20,9 +20,16 @@ def currency_list(request):
     return JsonResponse(data, safe=False)
 
 def currency_pair(request, first_code, second_code):
-    exchange_rate = ExchangeRate.objects.filter(currency_pair__icontains=first_code).filter(currency_pair__icontains=second_code).first()
+    exchange_rate = ExchangeRate.objects.filter(
+                                    first_currency_code__code=first_code
+                                        ).filter(
+                                    second_currency_code__code=second_code
+                                        ).first()
 
     if not exchange_rate:
         return JsonResponse({"error": "currency pair not found"}, status=404)
 
-    return JsonResponse({"currency_pair": exchange_rate.currency_pair, "exchange_rate": exchange_rate.exchange_rate})
+    return JsonResponse({
+        "currency_pair": first_code+second_code,
+        "exchange_rate": exchange_rate.exchange_rate
+    })

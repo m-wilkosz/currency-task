@@ -54,10 +54,15 @@ class Command(BaseCommand):
                                 if currency_pair[3:] == '=X':
                                     currency_pair = 'USD' + currency_pair[:-2]
 
+                                # retrieve Currency instances
+                                first_currency_code = Currency.objects.get(code=currency_pair[:3])
+                                second_currency_code = Currency.objects.get(code=currency_pair[3:6])
+
                                 # create record if it doesn't exist yet
                                 ExchangeRate.objects.get_or_create(
                                     date=time,
-                                    currency_pair=currency_pair[:6],
+                                    first_currency_code=first_currency_code,
+                                    second_currency_code=second_currency_code,
                                     defaults={'exchange_rate': exchange_rate},
                                     interval=interval
                                 )
@@ -84,11 +89,11 @@ class Command(BaseCommand):
 
     # overriding the handle method to execute our custom logic
     def handle(self, *args, **kwargs):
-        # fetch and process data for different intervals
-        for interval in ['1m', '1h', '1d']:
-            self.fetch_data(interval, initial=True)
-
         # create currencies if they don't exist yet
         currencies_to_add = ['USD', 'EUR', 'GBP', 'JPY', 'SGD', 'CHF', 'PLN']
         for code in currencies_to_add:
             Currency.objects.get_or_create(code=code)
+
+        # fetch and process data for different intervals
+        for interval in ['1m', '1h', '1d']:
+            self.fetch_data(interval, initial=True)

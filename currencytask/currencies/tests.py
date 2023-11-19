@@ -9,13 +9,14 @@ from django.urls import reverse
 class CurrenciesViewTests(TestCase):
     def setUp(self):
         # create some Currency test data
-        Currency.objects.create(code='USD')
-        Currency.objects.create(code='EUR')
+        usd = Currency.objects.create(code='USD')
+        eur = Currency.objects.create(code='EUR')
 
         # create some ExchangeRate test data
         ExchangeRate.objects.create(
             date=timezone.now(),
-            currency_pair='USDEUR',
+            first_currency_code=usd,
+            second_currency_code=eur,
             exchange_rate=1.2,
             interval='1m'
         )
