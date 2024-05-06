@@ -1,5 +1,5 @@
 # Currency task
-[![](https://skills.thijs.gg/icons?i=py,django,sqlite)](https://skills.thijs.gg)
+[![](https://skillicons.dev/icons?i=py,django,sqlite)](https://skillicons.dev)
 
 ### Update
 Deleted unique_together constraint from Currency model because it was slowing down data insertion and the application-level check (get_or_create method) is sufficient enough for this application. Also added relation between Currency and ExchangeRate models.
